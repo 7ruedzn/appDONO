@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "760027511882",
+    "firebase_url": "https://vaidebeizi-obaratao.firebaseio.com",
+    "project_id": "vaidebeizi-obaratao",
+    "storage_bucket": "vaidebeizi-obaratao.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760027511882:android:3239d1f1335e54e9e5bab3",
+        "android_client_info": {
+          "package_name": "com.example.obaratao"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "760027511882-3ktumqhvu1sq66aeg960vebsqvd4h3gk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdDIDRgpl65GZtcac1eHPpewDALIZXwWs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "760027511882-3ktumqhvu1sq66aeg960vebsqvd4h3gk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
