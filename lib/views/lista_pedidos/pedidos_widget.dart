@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:obaratao/utils/nav.dart';
+import 'package:obaratao/views/cadastro_produtos/formulario_cadastro.dart';
 import '../../widgets/layoutApp.dart';
 import 'recebePedido.dart';
 
@@ -21,10 +23,12 @@ class _PedidosState extends State<Pedidos> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Container(
-          color: Colors.blue,
-          width: 300,
-          height: 100,
+        Center(
+          child: FlatButton(
+              onPressed: () {
+                push(context, ProdutoCadastro());
+              },
+              child: Text("Cadastro de Produtos")),
         )
       ],
     );

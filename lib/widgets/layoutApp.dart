@@ -69,7 +69,7 @@ class LayoutTeste {
     return Scaffold(
       resizeToAvoidBottomInset: false, //Arruma o erro de overflow do teclado;
       appBar: AppBar(
-        title: _logo,
+        title: Text('LOGO BARATAO'),
         actions: _getHomeAction(context),
       ),
       body: SafeArea(
