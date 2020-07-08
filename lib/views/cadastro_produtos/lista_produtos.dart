@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:obaratao/models/produto.dart';
 
 class ProductsList extends StatefulWidget {
-  Produto produto = Produto();
   @override
   _ProductsListState createState() => _ProductsListState();
 }

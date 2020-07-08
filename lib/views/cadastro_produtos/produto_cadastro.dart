@@ -1,49 +1,17 @@
-import 'dart:io';
-
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:obaratao/models/produto.dart';
+import 'package:obaratao/blocs/bloc_produto.dart';
 import 'package:obaratao/utils/nav.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:obaratao/widgets/cus_text_field.dart';
 
 import 'lista_produtos.dart';
 
 class ProdutoCadastro extends StatefulWidget {
-  Produto produto = Produto();
   @override
   _ProdutoCadastroState createState() => _ProdutoCadastroState();
 }
 
 class _ProdutoCadastroState extends State<ProdutoCadastro> {
-  Produto produto2 = Produto();
-  Map<String, dynamic> data = {};
-  String urlImage;
-  File imgFile;
-  final _nomeController = TextEditingController();
-  final _descricaoController = TextEditingController();
-  final _precoController = TextEditingController();
-  //final _disponibilidadeController = TextEditingController();
-
-  _textField(
-      {String labelText,
-      TextEditingController controller,
-      TextInputType keyboardType,
-      bool obscureText = false,
-      void Function(String) onChanged,
-      String Function() errorText}) {
-    return TextField(
-      keyboardType: keyboardType,
-      controller: controller,
-      obscureText: obscureText,
-      onChanged: onChanged,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: labelText,
-        errorText: errorText == null ? null : errorText(),
-      ),
-    );
-  }
+  BlocProduto bloc;
 
   @override
   Widget build(BuildContext context) {
@@ -63,22 +31,22 @@ class _ProdutoCadastroState extends State<ProdutoCadastro> {
         children: <Widget>[
           Container(
             padding: EdgeInsets.all(8.0),
-            child: _textField(
-              controller: _nomeController,
+            child: CusTextField(
+              controller: bloc.nomeController,
               labelText: "nome do produto",
             ),
           ),
           Container(
             padding: EdgeInsets.all(8.0),
-            child: _textField(
-              controller: _descricaoController,
+            child: CusTextField(
+              controller: bloc.descricaoController,
               labelText: "descrição do produto",
             ),
           ),
           Container(
             padding: EdgeInsets.all(8.0),
-            child: _textField(
-              controller: _precoController,
+            child: CusTextField(
+              controller: bloc.precoController,
               keyboardType: TextInputType.number,
               labelText: "preço do produto",
             ),
@@ -86,67 +54,17 @@ class _ProdutoCadastroState extends State<ProdutoCadastro> {
           IconButton(
             icon: Icon(Icons.photo_camera),
             onPressed: () async {
-              imgFile =
-                  // ignore: deprecated_member_use
-                  await ImagePicker.pickImage(source: ImageSource.camera);
-              if (imgFile == null) {
-                return;
-              }
+              await bloc.loadImage();
             },
-          ),
-          Container(
-            child: Center(
-              child: urlImage == null
-                  ? Container()
-                  : Image.network(
-                      urlImage,
-                      width: 200,
-                      height: 200,
-                    ),
-            ),
           ),
           FlatButton(
             onPressed: () {
-              _cadastrarProduto();
+              bloc.cadastrarProduto();
             },
             child: Text("Cadastrar produtos"),
           ),
         ],
       ),
     );
-  }
-
-  Future<void> _cadastrarProduto() async {
-    if (imgFile != null) {
-      await _cadastrarImagem(imgFile);
-    }
-    data['nome'] = _nomeController.text;
-    data['descricao'] = _descricaoController.text;
-    data['preco'] = double.parse(_precoController.text);
-    _sendToFirestore(data);
-    _dispose();
-  }
-
-  void _sendToFirestore(data) {
-    Firestore.instance.collection('bebidas').add(data);
-  }
-
-  void _dispose() {
-    _nomeController.clear();
-    _descricaoController.clear();
-    _precoController.clear();
-  }
-
-  void _cadastrarImagem(File imgFile) async {
-    StorageUploadTask task = FirebaseStorage.instance
-        .ref()
-        .child(DateTime.now()
-            .millisecondsSinceEpoch
-            .toString()) // coloca em String a data atual, nome único para cada foto
-        .putFile(imgFile);
-
-    StorageTaskSnapshot taskSnapshot = await task.onComplete;
-    urlImage = await await taskSnapshot.ref.getDownloadURL();
-    data['foto'] = urlImage;
   }
 }
