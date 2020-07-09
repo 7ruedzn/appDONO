@@ -12,9 +12,9 @@ class BlocProduto extends BlocBase {
   Map<String, dynamic> data = {};
   String urlImage;
 
-  final nomeController = TextEditingController();
-  final descricaoController = TextEditingController();
-  final precoController = TextEditingController();
+  var nomeController = TextEditingController();
+  var descricaoController = TextEditingController();
+  var precoController = TextEditingController();
   //final _disponibilidadeController = TextEditingController();
 
   loadImage() async {

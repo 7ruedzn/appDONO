@@ -11,7 +11,13 @@ class ProdutoCadastro extends StatefulWidget {
 }
 
 class _ProdutoCadastroState extends State<ProdutoCadastro> {
-  BlocProduto bloc;
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  var productBloc = BlocProduto();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,43 +33,42 @@ class _ProdutoCadastroState extends State<ProdutoCadastro> {
           )
         ],
       ),
-      body: ListView(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(8.0),
-            child: CusTextField(
-              controller: bloc.nomeController,
-              labelText: "nome do produto",
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
+                CusTextField(
+                  controller: productBloc.nomeController,
+                  labelText: "nome do produto",
+                ),
+                CusTextField(
+                  controller: productBloc.descricaoController,
+                  labelText: "descrição do produto",
+                ),
+                CusTextField(
+                  controller: productBloc.precoController,
+                  keyboardType: TextInputType.number,
+                  labelText: "preço do produto",
+                ),
+                IconButton(
+                  icon: Icon(Icons.photo_camera),
+                  onPressed: () async {
+                    await productBloc.loadImage();
+                  },
+                ),
+                FlatButton(
+                  onPressed: () {
+                    productBloc.cadastrarProduto();
+                  },
+                  child: Text("Cadastrar produtos"),
+                ),
+              ],
             ),
           ),
-          Container(
-            padding: EdgeInsets.all(8.0),
-            child: CusTextField(
-              controller: bloc.descricaoController,
-              labelText: "descrição do produto",
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(8.0),
-            child: CusTextField(
-              controller: bloc.precoController,
-              keyboardType: TextInputType.number,
-              labelText: "preço do produto",
-            ),
-          ),
-          IconButton(
-            icon: Icon(Icons.photo_camera),
-            onPressed: () async {
-              await bloc.loadImage();
-            },
-          ),
-          FlatButton(
-            onPressed: () {
-              bloc.cadastrarProduto();
-            },
-            child: Text("Cadastrar produtos"),
-          ),
-        ],
+        ),
       ),
     );
   }
