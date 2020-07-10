@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:obaratao/utils/nav.dart';
+import 'package:obaratao/views/atualizar_produto/lista_produtos.dart';
 import 'package:obaratao/views/cadastro_produtos/categoria_cadastro.dart';
 import 'package:obaratao/views/cadastro_produtos/produto_cadastro.dart';
 import '../../widgets/layoutApp.dart';
@@ -37,6 +38,12 @@ class _PedidosState extends State<Pedidos> {
                 push(context, CategoriaCadastro());
               },
               child: Text("Criar Categorias"),
+            ),
+            FlatButton(
+              onPressed: (){
+                push(context, ListaProdutos());
+              },
+              child: Text('Atualizar Produto'),
             ),
           ]),
         )

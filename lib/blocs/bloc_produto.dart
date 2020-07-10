@@ -37,6 +37,21 @@ class BlocProduto extends BlocBase {
     _dispose();
   }
 
+  Future<void> atualizarProduto() async {
+    if (imgFile != null){
+      await _cadastrarImagem(imgFile);
+    }
+    data['nome'] = nomeController.text;
+    data['descricao'] = descricaoController.text;
+    data['preco'] = double.parse(precoController.text);
+  }
+
+  void _updateToFirestore(data){
+    Firestore.instance.collection('bebidas')
+    .document(/*add ID do produto*/ ).
+    updateData(data);
+  }
+
   void _sendToFirestore(data) {
     Firestore.instance.collection('bebidas').add(data);
   }
