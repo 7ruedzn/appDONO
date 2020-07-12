@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -13,6 +12,11 @@ class BlocProduto extends BlocBase {
   File imgFile;
   Map<String, dynamic> data = {};
   String urlImage;
+
+  final StreamController<List<ProdutoDados>> _productsController$ =
+      StreamController<List<ProdutoDados>>();
+
+  Stream<List<ProdutoDados>> get outProducts => _productsController$.stream;
 
   var nomeController = TextEditingController();
   var descricaoController = TextEditingController();
@@ -94,5 +98,25 @@ class BlocProduto extends BlocBase {
     StorageTaskSnapshot taskSnapshot = await task.onComplete;
     urlImage = await await taskSnapshot.ref.getDownloadURL();
     fotoController.text = urlImage;
+  }
+
+  Future<void> getAllProducts() async {
+    List<ProdutoDados> productList = [];
+    QuerySnapshot products = await Firestore.instance.
+    collection('produtos').document('Higiene').//collection
+    collection('produtos').//subcollecion
+    getDocuments();
+
+    products.documents.forEach((element) {
+      ProdutoDados produto = ProdutoDados.fromDocument(element);
+      productList.add(produto);
+    });
+    _productsController$.add(productList);
+  }
+
+  @override
+  void dispose(){
+    _productsController$.close();
+    super.dispose();
   }
 }

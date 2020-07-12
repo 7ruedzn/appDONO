@@ -1,3 +1,4 @@
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:obaratao/blocs/bloc_produto.dart';
 import 'package:obaratao/models/produtoDados.dart';
@@ -6,16 +7,18 @@ import 'package:obaratao/widgets/layout_color.dart';
 
 class AtualizarProduto extends StatefulWidget {
   ProdutoDados produto;
-  AtualizarProduto(this.produto);
+  BlocProduto bloc; 
+  AtualizarProduto(this.produto, this.bloc);
 
   @override
-  _AtualizarProdutoState createState() => _AtualizarProdutoState(produto);
+  _AtualizarProdutoState createState() => _AtualizarProdutoState(produto, bloc);
 }
 
 class _AtualizarProdutoState extends State<AtualizarProduto> {
 
   ProdutoDados produto;
-  _AtualizarProdutoState(this.produto);
+  BlocProduto bloc;
+  _AtualizarProdutoState(this.produto, this.bloc);
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   var productBloc = BlocProduto();

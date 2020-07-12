@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:obaratao/blocs/bloc_produto.dart';
 import 'package:obaratao/models/produtoDados.dart';
 import 'package:obaratao/utils/nav.dart';
 import 'package:obaratao/views/atualizar_produto/atualizar_widget.dart';
@@ -10,8 +11,16 @@ class ListaProdutos extends StatefulWidget {
 }
 
 class _ListaProdutosState extends State<ListaProdutos> {
+  BlocProduto blocProduto;
   ProdutoDados produto;
-  List<ProdutoDados> listProducts = [];
+  List<ProdutoDados> productList = [];
+
+  @override
+  void initState(){
+    super.initState();
+    blocProduto = BlocProduto();
+    blocProduto.getAllProducts();
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -19,14 +28,8 @@ class _ListaProdutosState extends State<ListaProdutos> {
       appBar: AppBar(
         title: Text('Atualizar Produto'),
       ),
-      body: FutureBuilder(
-      future: Firestore.instance.collection("produtos").getDocuments().then((value) {
-        List<DocumentSnapshot> _listDocuments = value.documents;
-        _listDocuments.forEach((_doc){
-          produto = ProdutoDados.fromDocument(_doc);
-          listProducts.add(produto);
-        });
-      }),
+      body: StreamBuilder(
+      stream: blocProduto.outProducts,
       builder: (context, snapshot) {
         switch (snapshot.connectionState){
           case ConnectionState.none:
@@ -41,7 +44,7 @@ class _ListaProdutosState extends State<ListaProdutos> {
             return ListView.builder(
               padding: EdgeInsets.all(5.0),
               scrollDirection: Axis.vertical,
-              itemCount: listProducts.length,
+              itemCount: snapshot.data.length,
               itemBuilder: (BuildContext context, int index){
                 return Padding(
                   padding: EdgeInsets.all(5.0),
@@ -49,7 +52,7 @@ class _ListaProdutosState extends State<ListaProdutos> {
                     children: <Widget>[
                       InkWell(
                         onTap: (){
-                          push(context, AtualizarProduto(listProducts[index]));
+                          push(context, AtualizarProduto(snapshot.data[index]));
                         },
                         borderRadius: BorderRadius.circular(10.0),
                         child: Card(
@@ -60,11 +63,11 @@ class _ListaProdutosState extends State<ListaProdutos> {
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 alignment: Alignment.centerLeft,
-                                image: NetworkImage(listProducts[index].icon),
-                                fit: BoxFit.contain,
+                                image: NetworkImage(snapshot.data[index].foto),
+                                fit: BoxFit.scaleDown,
                               ),
                             ),
-                            child: Center(child: Text(listProducts[index].title)),
+                            child: Center(child: Text(snapshot.data[index].nome)),
                           ),
                         ),
                       )

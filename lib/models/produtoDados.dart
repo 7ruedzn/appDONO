@@ -11,7 +11,7 @@ class ProdutoDados {
   String foto;
 
   double preco;
-  int estoque;
+  double estoque;
 
   List images;
   List tamanhos;
@@ -38,7 +38,7 @@ class ProdutoDados {
     id = snapshot.documentID;
     nome = snapshot.data["nome"];
     descricao = snapshot.data["descricao"];
-    preco = snapshot.data["preco"] + 0.0;
+    preco = snapshot.data["preco"] + (0.0);
     estoque = snapshot.data["estoque"];
     images = snapshot.data["images"];
     tamanhos = snapshot.data["tamanhos"];
