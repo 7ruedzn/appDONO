@@ -16,6 +16,22 @@ class ProdutoDados {
   List images;
   List tamanhos;
 
+  List<String> categorias;
+  ProdutoDados() {
+    this.categorias = [
+      'Bebidas',
+      'Churrasco',
+      'Congelados',
+      'Depósito',
+      'Enlatados',
+      'Frios',
+      'Higiene',
+      'Hortifrúti',
+      'Padaria',
+      'Diversos',
+    ];
+  }
+
   ProdutoDados.fromDocument(DocumentSnapshot snapshot) {
     title = snapshot.data["title"];
     icon = snapshot.data["icon"];

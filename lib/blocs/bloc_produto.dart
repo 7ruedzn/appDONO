@@ -5,7 +5,9 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:obaratao/utils/messages.dart';
 
 class BlocProduto extends BlocBase {
   File imgFile;
@@ -14,8 +16,11 @@ class BlocProduto extends BlocBase {
 
   var nomeController = TextEditingController();
   var descricaoController = TextEditingController();
-  var precoController = TextEditingController();
-  //final _disponibilidadeController = TextEditingController();
+  var fotoController = TextEditingController();
+  var categoriaController = TextEditingController();
+  var precoController = new MoneyMaskedTextController(leftSymbol: 'R\$ ');
+  var estoqueController =
+      new MoneyMaskedTextController(precision: 0, decimalSeparator: "");
 
   loadImage() async {
     imgFile =
@@ -23,43 +28,59 @@ class BlocProduto extends BlocBase {
         await ImagePicker.pickImage(source: ImageSource.camera);
     if (imgFile == null) {
       return;
+    } else {
+      _cadastrarImagem(imgFile);
     }
   }
 
   Future<void> cadastrarProduto() async {
-    if (imgFile != null) {
-      await _cadastrarImagem(imgFile);
-    }
     data['nome'] = nomeController.text;
     data['descricao'] = descricaoController.text;
-    data['preco'] = double.parse(precoController.text);
-    _sendToFirestore(data);
+    data['preco'] = precoController.numberValue;
+    data['estoque'] = estoqueController.numberValue;
+    data['foto'] = fotoController.text;
+    String _categoria = categoriaController.text;
+    _sendToFirestore(
+      data,
+      _categoria,
+    );
     _dispose();
   }
 
+  validarProduto() {
+    validarNome() {}
+  }
+
   Future<void> atualizarProduto() async {
-    if (imgFile != null){
-      await _cadastrarImagem(imgFile);
-    }
     data['nome'] = nomeController.text;
     data['descricao'] = descricaoController.text;
-    data['preco'] = double.parse(precoController.text);
+    data['preco'] = precoController.numberValue;
+    data['estoque'] = estoqueController.numberValue;
+    data['foto'] = fotoController.text;
   }
 
-  void _updateToFirestore(data){
-    Firestore.instance.collection('bebidas')
-    .document(/*add ID do produto*/ ).
-    updateData(data);
+  void _updateToFirestore(data) {
+    Firestore.instance
+        .collection('bebidas')
+        .document(/*add ID do produto*/)
+        .updateData(data);
   }
 
-  void _sendToFirestore(data) {
-    Firestore.instance.collection('bebidas').add(data);
+  void _sendToFirestore(Map<String, dynamic> data, String categoria) {
+    Firestore.instance
+        .collection("produtos")
+        .document(categoria)
+        .collection("produtos")
+        .add(data);
   }
 
   void _dispose() {
     nomeController.clear();
     descricaoController.clear();
-    precoController.clear();
+    precoController.text = "R\$0,00";
+    estoqueController.clear();
+    fotoController.clear();
+    categoriaController.clear();
   }
 
   void _cadastrarImagem(File imgFile) async {
@@ -72,6 +93,6 @@ class BlocProduto extends BlocBase {
 
     StorageTaskSnapshot taskSnapshot = await task.onComplete;
     urlImage = await await taskSnapshot.ref.getDownloadURL();
-    data['foto'] = urlImage;
+    fotoController.text = urlImage;
   }
 }

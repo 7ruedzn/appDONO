@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:obaratao/views/lista_pedidos/pedidos_widget.dart';
+import 'screens/home_screen.dart';
 import 'widgets/layout_color.dart';
 
 void main() {
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: LayoutColor.primaryColor,
       ),
-      home: PedidosWidget(),
+      home: HomeScreen(),
       //routes: routes,
     );
   }
