@@ -6,7 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:obaratao/utils/messages.dart';
+import 'package:obaratao/models/produtoDados.dart';
 
 class BlocProduto extends BlocBase {
   File imgFile;
@@ -63,11 +63,8 @@ class BlocProduto extends BlocBase {
     data['foto'] = fotoController.text;
   }
 
-  void _updateToFirestore(data) {
-    Firestore.instance
-        .collection('bebidas')
-        .document(/*add ID do produto*/)
-        .updateData(data);
+  void updateToFirestore(data, id) {
+    Firestore.instance.collection('bebidas').document(id).updateData(data);
   }
 
   void _sendToFirestore(Map<String, dynamic> data, String categoria) {
@@ -102,10 +99,13 @@ class BlocProduto extends BlocBase {
 
   Future<void> getAllProducts() async {
     List<ProdutoDados> productList = [];
-    QuerySnapshot products = await Firestore.instance.
-    collection('produtos').document('Higiene').//collection
-    collection('produtos').//subcollecion
-    getDocuments();
+    QuerySnapshot products = await Firestore.instance
+        .collection('produtos')
+        .document('Higiene')
+        . //collection
+        collection('produtos')
+        . //subcollecion
+        getDocuments();
 
     products.documents.forEach((element) {
       ProdutoDados produto = ProdutoDados.fromDocument(element);
@@ -115,7 +115,7 @@ class BlocProduto extends BlocBase {
   }
 
   @override
-  void dispose(){
+  void dispose() {
     _productsController$.close();
     super.dispose();
   }

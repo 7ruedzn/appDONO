@@ -16,12 +16,12 @@ class _ListaProdutosState extends State<ListaProdutos> {
   List<ProdutoDados> productList = [];
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     blocProduto = BlocProduto();
     blocProduto.getAllProducts();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,56 +29,62 @@ class _ListaProdutosState extends State<ListaProdutos> {
         title: Text('Atualizar Produto'),
       ),
       body: StreamBuilder(
-      stream: blocProduto.outProducts,
-      builder: (context, snapshot) {
-        switch (snapshot.connectionState){
-          case ConnectionState.none:
-            return Center(
-              child: Text('Verifique sua conexão!', style: TextStyle(color: Colors.black),),
-            );
-          case ConnectionState.waiting:
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          default:
-            return ListView.builder(
-              padding: EdgeInsets.all(5.0),
-              scrollDirection: Axis.vertical,
-              itemCount: snapshot.data.length,
-              itemBuilder: (BuildContext context, int index){
-                return Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: Column(
-                    children: <Widget>[
-                      InkWell(
-                        onTap: (){
-                          push(context, AtualizarProduto(snapshot.data[index]));
-                        },
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: Card(
-                          elevation: 3.0,
-                          child: Container(
-                            width: 300,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                alignment: Alignment.centerLeft,
-                                image: NetworkImage(snapshot.data[index].foto),
-                                fit: BoxFit.scaleDown,
-                              ),
-                            ),
-                            child: Center(child: Text(snapshot.data[index].nome)),
-                          ),
-                        ),
-                      )
-                    ],
+          stream: blocProduto.outProducts,
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return Center(
+                  child: Text(
+                    'Verifique sua conexão!',
+                    style: TextStyle(color: Colors.black),
                   ),
                 );
-              }
-            );
-        }
-      }
-      ),
+              case ConnectionState.waiting:
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              default:
+                return ListView.builder(
+                    padding: EdgeInsets.all(5.0),
+                    scrollDirection: Axis.vertical,
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Column(
+                          children: <Widget>[
+                            InkWell(
+                              onTap: () {
+                                push(
+                                    context,
+                                    AtualizarProduto(
+                                        snapshot.data[index], blocProduto));
+                              },
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Card(
+                                elevation: 3.0,
+                                child: Container(
+                                  width: 300,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      alignment: Alignment.centerLeft,
+                                      image: NetworkImage(
+                                          snapshot.data[index].foto),
+                                      fit: BoxFit.scaleDown,
+                                    ),
+                                  ),
+                                  child: Center(
+                                      child: Text(snapshot.data[index].nome)),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    });
+            }
+          }),
     );
   }
 }
