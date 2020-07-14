@@ -55,10 +55,7 @@ class _ListaProdutosState extends State<ListaProdutos> {
                           children: <Widget>[
                             InkWell(
                               onTap: () {
-                                push(
-                                    context,
-                                    AtualizarProduto(
-                                        snapshot.data[index], blocProduto));
+                                push(context, AtualizarProduto(snapshot.data[index], blocProduto));
                               },
                               borderRadius: BorderRadius.circular(10.0),
                               child: Card(

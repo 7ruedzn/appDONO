@@ -1,4 +1,4 @@
-#Sun Jul 12 21:12:47 BRT 2020
+#Tue Jul 14 13:26:41 BRT 2020
 base.2=C\:\\Users\\User\\.vscode\\appDONO\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\out\\classes2.dex
 base.1=C\:\\Users\\User\\.vscode\\appDONO\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\out\\classes.dex
 base.0=C\:\\Users\\User\\.vscode\\appDONO\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\out\\classes.dex

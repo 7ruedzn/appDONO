@@ -64,10 +64,24 @@ class BlocProduto extends BlocBase {
     data['preco'] = precoController.numberValue;
     data['estoque'] = estoqueController.numberValue;
     data['foto'] = fotoController.text;
+    //String _categoria = categoriaController.text;
   }
 
-  void updateToFirestore(data, id) {
-    Firestore.instance.collection('bebidas').document(id).updateData(data);
+  void updateToFirestore(id) {
+    Firestore.instance.
+    collection("produtos").
+    document("Higiene").//categoria;
+    collection("produtos").
+    document(id).
+    setData(
+    {
+      'nome': nomeController.text,
+      'descricao': descricaoController.text,
+      'preco': precoController.numberValue,
+      'foto': fotoController.text,
+      'estoque': estoqueController.numberValue,
+    }, merge: true);
+    _dispose();
   }
 
   void _sendToFirestore(Map<String, dynamic> data, String categoria) {
