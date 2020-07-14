@@ -7,11 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:obaratao/models/produtoDados.dart';
+import 'package:obaratao/service/firestore_service.dart';
 
 class BlocProduto extends BlocBase {
   File imgFile;
   Map<String, dynamic> data = {};
   String urlImage;
+  ProdutoDados produto = ProdutoDados();
+  Service service = Service();
 
   final StreamController<List<ProdutoDados>> _productsController$ =
       StreamController<List<ProdutoDados>>();
@@ -98,20 +101,21 @@ class BlocProduto extends BlocBase {
   }
 
   Future<void> getAllProducts() async {
-    List<ProdutoDados> productList = [];
-    QuerySnapshot products = await Firestore.instance
-        .collection('produtos')
-        .document('Higiene')
-        . //collection
-        collection('produtos')
-        . //subcollecion
-        getDocuments();
+    List<ProdutoDados> _productList = [];
+    QuerySnapshot querySnapshot;
 
-    products.documents.forEach((element) {
-      ProdutoDados produto = ProdutoDados.fromDocument(element);
-      productList.add(produto);
+    produto.categorias.forEach((_category) async {
+      querySnapshot = await service.getDocumentsByCategory(_category);
+
+      if (querySnapshot.documents.isNotEmpty ||
+          querySnapshot.documents.length > 0) {
+        querySnapshot.documents.forEach((_doc) {
+          ProdutoDados _produto = ProdutoDados.fromDocument(_doc);
+          _productList.add(_produto);
+        });
+        _productsController$.add(_productList);
+      }
     });
-    _productsController$.add(productList);
   }
 
   @override

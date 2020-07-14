@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:obaratao/blocs/bloc_produto.dart';
 import 'package:obaratao/models/produtoDados.dart';
 import 'package:obaratao/utils/messages.dart';
-import 'package:obaratao/utils/nav.dart';
 import 'package:obaratao/widgets/cus_text_field.dart';
 import 'package:obaratao/widgets/layout_color.dart';
-
-import 'lista_produtos.dart';
 
 class ProdutoCadastro extends StatefulWidget {
   @override
