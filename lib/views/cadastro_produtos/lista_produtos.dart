@@ -27,7 +27,6 @@ class _ProductsListState extends State<ProductsList> {
                     );
                   default:
                     List<DocumentSnapshot> produtos = snapshot.data.documents;
-
                     return ListView.builder(
                       itemCount: produtos.length,
                       itemBuilder: (context, index) {
