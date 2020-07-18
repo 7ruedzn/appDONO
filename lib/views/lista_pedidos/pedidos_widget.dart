@@ -4,7 +4,6 @@ import 'package:obaratao/views/atualizar_produto/lista_produtos.dart';
 import 'package:obaratao/views/cadastro_produtos/categoria_cadastro.dart';
 import 'package:obaratao/views/cadastro_produtos/produto_cadastro.dart';
 import '../../widgets/layoutApp.dart';
-import 'recebePedido.dart';
 
 class PedidosWidget extends StatelessWidget {
   static String tag = 'pedidos';

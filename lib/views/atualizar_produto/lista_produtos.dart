@@ -2,8 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:obaratao/blocs/bloc_produto.dart';
 import 'package:obaratao/models/produtoDados.dart';
+import 'package:obaratao/screens/home_screen.dart';
 import 'package:obaratao/utils/nav.dart';
-import 'package:obaratao/views/atualizar_produto/atualizar_widget.dart';
+import 'package:obaratao/widgets/layout_color.dart';
+
+import 'atualizar_produto.dart';
 
 class ListaProdutos extends StatefulWidget {
   @override
@@ -12,8 +15,9 @@ class ListaProdutos extends StatefulWidget {
 
 class _ListaProdutosState extends State<ListaProdutos> {
   BlocProduto blocProduto;
-  ProdutoDados produto;
+  ProdutoDados produto = ProdutoDados();
   List<ProdutoDados> productList = [];
+  bool _onRefresh = false;
 
   @override
   void initState() {
@@ -26,10 +30,13 @@ class _ListaProdutosState extends State<ListaProdutos> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Atualizar Produto'),
+        title: Text('Lista de Produtos'),
+        backgroundColor: LayoutColor.secondaryColor,
+        centerTitle: true,
+        leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () {push(context, HomeScreen(), replace: true);}),
       ),
       body: StreamBuilder(
-          stream: blocProduto.outProducts,
+          stream: _onRefresh ? null : blocProduto.outProducts,
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
@@ -44,44 +51,41 @@ class _ListaProdutosState extends State<ListaProdutos> {
                   child: CircularProgressIndicator(),
                 );
               default:
+                productList = snapshot.data;
                 return ListView.builder(
-                    padding: EdgeInsets.all(5.0),
-                    scrollDirection: Axis.vertical,
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Column(
-                          children: <Widget>[
-                            InkWell(
-                              onTap: () {
-                                push(context, AtualizarProduto(snapshot.data[index], blocProduto));
-                              },
-                              borderRadius: BorderRadius.circular(10.0),
-                              child: Card(
-                                elevation: 3.0,
-                                child: Container(
-                                  width: 300,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      alignment: Alignment.centerLeft,
-                                      image: NetworkImage(
-                                          snapshot.data[index].foto),
-                                      fit: BoxFit.scaleDown,
-                                    ),
-                                  ),
-                                  child: Center(
-                                      child: Text(snapshot.data[index].nome)),
-                                ),
-                              ),
-                            )
-                          ],
+                  itemCount: productList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      padding: EdgeInsets.all(4.0),
+                      child: ListTile(
+                        onTap: () => push(context, AtualizarProduto(productList[index], blocProduto)),
+                        contentPadding: EdgeInsets.all(4.0),
+                        leading: Container(
+                          child: Image.network(
+                            productList[index].foto,
+                            fit: BoxFit.scaleDown,
+                          ),
                         ),
-                      );
-                    });
+                        title: Text(productList[index].nome),
+                        subtitle: Text('R\$ ' + productList[index].preco.toString().replaceAll(".", ",")),
+                        trailing: IconButton(icon: Icon(Icons.delete), onPressed: () => _deleteProduct(productList[index].categoria, productList[index])),
+                      ),
+                    );
+                  },
+                );
             }
           }),
     );
+  }
+
+  Future<void> _deleteProduct(String categoria, ProdutoDados p) async {
+    DocumentReference productIdRef = Firestore.instance
+        .collection("produtos")
+        .document(categoria)
+        .collection("produtos")
+        .document(p.id);
+    await productIdRef.delete();
+    push(context, ListaProdutos(), replace: true);
+    
   }
 }

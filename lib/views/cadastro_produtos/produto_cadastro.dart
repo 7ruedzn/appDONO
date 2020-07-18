@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:obaratao/blocs/bloc_produto.dart';
 import 'package:obaratao/models/produtoDados.dart';
 import 'package:obaratao/utils/messages.dart';
-import 'package:obaratao/widgets/cus_text_field.dart';
+import 'package:obaratao/widgets/cus_text_form_field.dart';
 import 'package:obaratao/widgets/layout_color.dart';
 
 class ProdutoCadastro extends StatefulWidget {
@@ -25,6 +25,11 @@ class _ProdutoCadastroState extends State<ProdutoCadastro> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Cadastre seu produto"),
+        centerTitle: true,
+        backgroundColor:LayoutColor.secondaryColor,
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -59,51 +64,53 @@ class _ProdutoCadastroState extends State<ProdutoCadastro> {
                 SizedBox(
                   height: 15,
                 ),
-                CusTextField(
-                  controller: productBloc.nomeController,
+                CusTextFormField(
                   labelText: "Nome do Produto",
-                  hint: "Ex: Cerveja Brahma 350ml Lata",
+                  controller: productBloc.nomeController,
                   validator: (_value) {
                     _value == null ? "Coloque o nome do produto" : null;
                   },
+                  keyboardType: TextInputType.text,
+                  hintText: "Ex: Cerveja Brahma 350ml Lata",
                 ),
                 SizedBox(
                   height: 15,
                 ),
-                CusTextField(
-                  controller: productBloc.descricaoController,
+                CusTextFormField(
                   labelText: "Descrição do Produto",
-                  hint: "Ex: Cerveja Pilsen",
+                  controller: productBloc.descricaoController,
                   validator: (_value) {
                     _value.contains(new RegExp(r'[@#^?"{}|]'))
                         ? "Não coloque caracteres especiais"
                         : null;
                   },
+                  keyboardType: TextInputType.text,
+                  hintText: "Ex: Cerveja Pilsen",
                 ),
                 SizedBox(
                   height: 15,
                 ),
-                CusTextField(
-                  controller: productBloc.precoController,
-                  keyboardType: TextInputType.number,
+                CusTextFormField(
                   labelText: "Preço do Produto",
+                  controller: productBloc.precoController,
                   validator: (_value) {
                     productBloc.precoController.numberValue > 0
                         ? "Coloque o preço do produto"
                         : null;
                   },
+                  keyboardType: TextInputType.number,
                 ),
                 SizedBox(
                   height: 15,
                 ),
-                CusTextField(
-                  controller: productBloc.estoqueController,
-                  keyboardType: TextInputType.number,
+                CusTextFormField(
                   labelText: "Quantidade em Estoque",
-                  hint: "Ex: 100",
+                  controller: productBloc.estoqueController,
                   validator: (_value) {
                     _value == null ? "Coloque a quantidade em estoque" : null;
                   },
+                  keyboardType: TextInputType.number,
+                  hintText: "Ex: 100",
                 ),
                 SizedBox(
                   height: 15,

@@ -25,7 +25,7 @@ class BlocProduto extends BlocBase {
   var descricaoController = TextEditingController();
   var fotoController = TextEditingController();
   var categoriaController = TextEditingController();
-  var precoController = new MoneyMaskedTextController(leftSymbol: 'R\$ ');
+  var precoController = new MoneyMaskedTextController(leftSymbol: 'R\$ ', precision: 2);
   var estoqueController =
       new MoneyMaskedTextController(precision: 0, decimalSeparator: "");
 
@@ -58,29 +58,25 @@ class BlocProduto extends BlocBase {
     validarNome() {}
   }
 
-  Future<void> atualizarProduto() async {
-    data['nome'] = nomeController.text;
-    data['descricao'] = descricaoController.text;
-    data['preco'] = precoController.numberValue;
-    data['estoque'] = estoqueController.numberValue;
-    data['foto'] = fotoController.text;
+  Future<void> atualizarProduto(String id, String categoria) async {
+    Map<String, dynamic> _data = {};
+    _data['nome'] = nomeController.text;
+    _data['descricao'] = descricaoController.text;
+    _data['preco'] = precoController.numberValue;
+    _data['estoque'] = estoqueController.numberValue;
+    _data['foto'] = fotoController.text;
+    await _updateToFirestore(id, _data, categoria);
+
     //String _categoria = categoriaController.text;
   }
 
-  void updateToFirestore(id) {
-    Firestore.instance.
+  Future<void> _updateToFirestore(String id, Map<String, dynamic> data, String categoria) async {
+    await Firestore.instance.
     collection("produtos").
-    document("Higiene").//categoria;
+    document(categoria).
     collection("produtos").
     document(id).
-    setData(
-    {
-      'nome': nomeController.text,
-      'descricao': descricaoController.text,
-      'preco': precoController.numberValue,
-      'foto': fotoController.text,
-      'estoque': estoqueController.numberValue,
-    }, merge: true);
+    setData(data, merge: true);
     _dispose();
   }
 
@@ -95,7 +91,7 @@ class BlocProduto extends BlocBase {
   void _dispose() {
     nomeController.clear();
     descricaoController.clear();
-    precoController.text = "R\$0,00";
+    precoController.updateValue(0.0);
     estoqueController.clear();
     fotoController.clear();
     categoriaController.clear();
@@ -119,12 +115,14 @@ class BlocProduto extends BlocBase {
     QuerySnapshot querySnapshot;
 
     produto.categorias.forEach((_category) async {
+      ProdutoDados _produto = ProdutoDados();
       querySnapshot = await service.getDocumentsByCategory(_category);
 
       if (querySnapshot.documents.isNotEmpty ||
           querySnapshot.documents.length > 0) {
         querySnapshot.documents.forEach((_doc) {
-          ProdutoDados _produto = ProdutoDados.fromDocument(_doc);
+          _produto = ProdutoDados.fromDocument(_doc);
+          _produto.categoria = _category;
           _productList.add(_produto);
         });
         _productsController$.add(_productList);
