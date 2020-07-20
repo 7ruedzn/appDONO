@@ -19,14 +19,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModel<UserModel>(
       model: UserModel(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: LayoutColor.secondaryColor,
-        ),
-        home: LoginPage2(),
+      child: ScopedModelDescendant<UserModel>(
+        builder: (context, child, model) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              primarySwatch: LayoutColor.secondaryColor,
+            ),
+            home: model.isLoggedIn() ? HomeScreen() : LoginPage2(),
+          );
+        },
       ),
-      //routes: routes,
     );
   }
 }

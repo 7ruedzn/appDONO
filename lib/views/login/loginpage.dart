@@ -13,7 +13,6 @@ class LoginPage2 extends StatefulWidget {
 }
 
 class _LoginPage2State extends State<LoginPage2> {
-
   var _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -22,6 +21,8 @@ class _LoginPage2State extends State<LoginPage2> {
   final _tSenha = TextEditingController();
 
   final _focusSenha = FocusNode();
+
+  bool _notSeePass = true;
 
   @override
   Widget build(BuildContext context) {
@@ -34,13 +35,13 @@ class _LoginPage2State extends State<LoginPage2> {
         brightness: Brightness.light,
         backgroundColor: Colors.white,
         leading: IconButton(
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
           },
           icon: Icon(Icons.arrow_back_ios, size: 20.0, color: Colors.black),
         ),
       ),
-      body: ScopedModelDescendant<UserModel>(builder: (context, child, model){
+      body: ScopedModelDescendant<UserModel>(builder: (context, child, model) {
         return SingleChildScrollView(
           child: Form(
             key: _formKey,
@@ -56,42 +57,80 @@ class _LoginPage2State extends State<LoginPage2> {
                       children: <Widget>[
                         Column(
                           children: <Widget>[
-                            FadeAnimation(1,Text('Login', style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
+                            FadeAnimation(
+                                1,
+                                Text(
+                                  'Login',
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )),
+                            SizedBox(
+                              height: 20,
                             ),
-                            )),
-                            SizedBox(height: 20,),
-                            FadeAnimation(1.2,Text('Faça login em sua conta', style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.grey[700],
+                            FadeAnimation(
+                                1.2,
+                                Text(
+                                  'Faça login em sua conta',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.grey[700],
+                                  ),
+                                )),
+                            SizedBox(
+                              height: 20,
                             ),
-                            )),
-                            SizedBox(height: 20,),
                           ],
                         ),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 40.0),
                           child: Column(
                             children: <Widget>[
-                              FadeAnimation(1.4, CusTextFormField(
-                                labelText: "Email",
-                                hintText: "Ex: seuemail@exemplo.com",
-                                controller: _tUser,
-                                validator: _validateUser,
-                                keyboardType: TextInputType.emailAddress,
-                                textInputAction: TextInputAction.next,
-                                nextFocus: _focusSenha,
-                              )),
-                              SizedBox(height: 30,),
-                              FadeAnimation(1.5,CusTextFormField(
-                                labelText: "Senha",
-                                controller: _tSenha,
-                                validator: _validateSenha,
-                                keyboardType: TextInputType.visiblePassword,
-                                obscureText: true,
-                              )),
-                              SizedBox(height: 30,),
+                              FadeAnimation(
+                                  1.4,
+                                  CusTextFormField(
+                                    labelText: "Email",
+                                    hintText: "Ex: seuemail@exemplo.com",
+                                    controller: _tUser,
+                                    validator: _validateUser,
+                                    keyboardType: TextInputType.emailAddress,
+                                    textInputAction: TextInputAction.next,
+                                    nextFocus: _focusSenha,
+                                  )),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              FadeAnimation(
+                                  1.5,
+                                  Column(children: [
+                                    CusTextFormField(
+                                      labelText: "Senha",
+                                      controller: _tSenha,
+                                      validator: _validateSenha,
+                                      keyboardType:
+                                          TextInputType.visiblePassword,
+                                      obscureText: _notSeePass,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Align(
+                                      child: IconButton(
+                                        icon: Icon(_notSeePass
+                                            ? Icons.remove_red_eye
+                                            : Icons.visibility_off),
+                                        onPressed: () {
+                                          setState(() {
+                                            _notSeePass = !_notSeePass;
+                                          });
+                                        },
+                                      ),
+                                    )
+                                  ])),
+                              SizedBox(
+                                height: 30,
+                              ),
                             ],
                           ),
                         ),
@@ -100,48 +139,55 @@ class _LoginPage2State extends State<LoginPage2> {
                           child: Container(
                             padding: EdgeInsets.only(top: 3.0, left: 3.0),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50.0),
-                              border: Border(
-                                top: BorderSide(color: Colors.black),
-                                left: BorderSide(color: Colors.black),
-                                right: BorderSide(color: Colors.black),
-                                bottom: BorderSide(color: Colors.black),
-                              )
-                            ),
-                            child: FadeAnimation(1.6,MaterialButton(
-                            minWidth: double.infinity,
-                            height: 60.0,
-                            onPressed: (){
-                              _onClickLogin(model);
-                            },
-                            color: Colors.yellow,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: Text('Login', style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            ),
-                          )),
+                                borderRadius: BorderRadius.circular(50.0),
+                                border: Border(
+                                  top: BorderSide(color: Colors.black),
+                                  left: BorderSide(color: Colors.black),
+                                  right: BorderSide(color: Colors.black),
+                                  bottom: BorderSide(color: Colors.black),
+                                )),
+                            child: FadeAnimation(
+                                1.6,
+                                MaterialButton(
+                                  minWidth: double.infinity,
+                                  height: 60.0,
+                                  onPressed: () {
+                                    _onClickLogin(model);
+                                  },
+                                  color: Colors.yellow,
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  child: Text(
+                                    'Login',
+                                    style: TextStyle(
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                )),
                           ),
                         ),
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             push(context, HomeScreen());
                           },
-                          child: FadeAnimation(1.7, Text('Esqueceu sua senha?')),
+                          child:
+                              FadeAnimation(1.7, Text('Esqueceu sua senha?')),
                         ),
-                        FadeAnimation(1.8, Container(
-                          height: MediaQuery.of(context).size.height / 2.5,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/initialpage.png'),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        )),
+                        FadeAnimation(
+                            1.8,
+                            Container(
+                              height: MediaQuery.of(context).size.height / 2.5,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                      'assets/images/initialpage.png'),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            )),
                       ],
                     ),
                   )
@@ -150,8 +196,7 @@ class _LoginPage2State extends State<LoginPage2> {
             ),
           ),
         );
-      }
-    ),
+      }),
     );
   }
 
@@ -200,5 +245,4 @@ class _LoginPage2State extends State<LoginPage2> {
       duration: Duration(seconds: 2),
     ));
   }
-
 }

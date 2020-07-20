@@ -24,6 +24,7 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
   _AtualizarProdutoState(this.produto, this.bloc);
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   var productBloc = BlocProduto();
   bool _isLoading = false; //bool para acionar o circular progresss indicator
   bool _isLoadingImage = false;
@@ -37,6 +38,7 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
@@ -51,31 +53,37 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
             key: _formKey,
             child: Column(
               children: <Widget>[
-
                 //FOTO
 
-                Container(
-                  height: size.height / 4,
-                  width: size.width / 2,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.blueGrey,
-                      image: _isLoadingImage
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : DecorationImage(
-                              image: NetworkImage(produto.foto),
-                              fit: BoxFit.fill,
-                            ),
+                StreamBuilder(
+                    stream: productBloc.outFoto,
+                    builder: (context, AsyncSnapshot<String> snapshot) {
+                      return Container(
+                        height: size.height / 4,
+                        width: size.width / 2,
+                        child: snapshot.connectionState ==
+                                    ConnectionState.waiting &&
+                                _isLoadingImage == true
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : Image.network(
+                                snapshot.data == null || snapshot.data == ""
+                                    ? produto.foto
+                                    : snapshot.data,
+                                fit: BoxFit.fill,
+                              ),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.blueGrey,
                             border: Border(
                               top: BorderSide(color: Colors.black),
                               left: BorderSide(color: Colors.black),
                               right: BorderSide(color: Colors.black),
                               bottom: BorderSide(color: Colors.black),
-                            )
-                  ),
-                ),
+                            )),
+                      );
+                    }),
                 SizedBox(height: 20.0),
 
                 //ICONE DA CÂMERA
@@ -98,11 +106,15 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
                     ),
                     //tentar att a pagina quando tirar a foto;
                     onPressed: () async {
-                      _isLoadingImage = true;
+                      setState(() {
+                        _isLoadingImage = true;
+                      });
                       await productBloc.loadImage();
-                      _isLoadingImage = false;
                     },
-                    child: Icon(Icons.photo_camera, size: 40.0,),
+                    child: Icon(
+                      Icons.photo_camera,
+                      size: 40.0,
+                    ),
                   ),
                 ),
                 SizedBox(height: 20.0),
@@ -142,17 +154,19 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
                         padding: EdgeInsets.zero,
                         minWidth: double.infinity,
                         onPressed: () {
-                            setState(() {
-                              _editName = !_editName;
-                            });
-                          },
+                          setState(() {
+                            _editName = !_editName;
+                          });
+                        },
                         shape: RoundedRectangleBorder(
                           side: BorderSide(
                             color: Colors.black,
                           ),
                           borderRadius: BorderRadius.circular(13),
                         ),
-                        child: Icon(Icons.edit,),
+                        child: Icon(
+                          Icons.edit,
+                        ),
                       ),
                     ),
                   ],
@@ -193,17 +207,19 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
                         padding: EdgeInsets.zero,
                         minWidth: double.infinity,
                         onPressed: () {
-                            setState(() {
-                              _editDescription = !_editDescription;
-                            });
-                          },
+                          setState(() {
+                            _editDescription = !_editDescription;
+                          });
+                        },
                         shape: RoundedRectangleBorder(
                           side: BorderSide(
                             color: Colors.black,
                           ),
                           borderRadius: BorderRadius.circular(13),
                         ),
-                        child: Icon(Icons.edit,),
+                        child: Icon(
+                          Icons.edit,
+                        ),
                       ),
                     ),
                   ],
@@ -219,8 +235,11 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
                     Container(
                       height: 40,
                       width: 200,
-                      child: CusTextFormField( 
-                        labelText: _editPrice ? "" : 'R\$ ' + produto.preco.toString().replaceAll(".", ","),
+                      child: CusTextFormField(
+                        labelText: _editPrice
+                            ? ""
+                            : 'R\$ ' +
+                                produto.preco.toString().replaceAll(".", ","),
                         controller:
                             _editPrice ? productBloc.precoController : null,
                         validator: (_value) {
@@ -243,17 +262,19 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
                         padding: EdgeInsets.zero,
                         minWidth: double.infinity,
                         onPressed: () {
-                            setState(() {
-                              _editPrice = !_editPrice;
-                            });
-                          },
+                          setState(() {
+                            _editPrice = !_editPrice;
+                          });
+                        },
                         shape: RoundedRectangleBorder(
                           side: BorderSide(
                             color: Colors.black,
                           ),
                           borderRadius: BorderRadius.circular(13),
                         ),
-                        child: Icon(Icons.edit,),
+                        child: Icon(
+                          Icons.edit,
+                        ),
                       ),
                     ),
                   ],
@@ -269,9 +290,12 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
                     Container(
                       height: 40,
                       width: 200,
-                      child: CusTextFormField( 
-                        labelText: _editEstoque ? "" : produto.estoque.toString().replaceAll(".", ","),
-                        controller: _editEstoque ? productBloc.estoqueController : null,
+                      child: CusTextFormField(
+                        labelText: _editEstoque
+                            ? ""
+                            : produto.estoque.toString().replaceAll(".", ","),
+                        controller:
+                            _editEstoque ? productBloc.estoqueController : null,
                         validator: (_value) {
                           productBloc.estoqueController.numberValue ==
                                   produto.estoque
@@ -291,59 +315,67 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
                         padding: EdgeInsets.zero,
                         minWidth: double.infinity,
                         onPressed: () {
-                            setState(() {
-                              _estoqueDoNotChanged = !_estoqueDoNotChanged;
-                              _editEstoque = !_editEstoque;
-                            });
-                          },
+                          setState(() {
+                            _estoqueDoNotChanged = !_estoqueDoNotChanged;
+                            _editEstoque = !_editEstoque;
+                          });
+                        },
                         shape: RoundedRectangleBorder(
                           side: BorderSide(
                             color: Colors.black,
                           ),
                           borderRadius: BorderRadius.circular(13),
                         ),
-                        child: Icon(Icons.edit,),
+                        child: Icon(
+                          Icons.edit,
+                        ),
                       ),
                     ),
                   ],
                 ),
                 SizedBox(height: 20.0),
-                
+
                 //ATUALIZAR PRODUTO BUTTON
 
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 30.0),
-                  child: Container(
-                    padding: EdgeInsets.only(top: 3.0, left: 3.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50.0),
-                      border: Border(
-                        top: BorderSide(color: Colors.black),
-                        left: BorderSide(color: Colors.black),
-                        right: BorderSide(color: Colors.black),
-                        bottom: BorderSide(color: Colors.black),
-                      )
-                    ),
-                    child: MaterialButton(
-                    minWidth: double.infinity,
-                    height: 60.0,
-                    onPressed: () async {
-                    if (_formKey.currentState.validate()) {
-                      _checkInputs();
-                      await productBloc.atualizarProduto(
-                          produto.id, produto.categoria);
-                          push(context, ListaProdutos(), replace: true);
-                    }
-                  },
-                    color: Colors.yellow,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: Icon(Icons.cloud_upload, size: 40.0,),
-                  ),
-                  )
-                )
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 30.0),
+                    child: Container(
+                      padding: EdgeInsets.only(top: 3.0, left: 3.0),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50.0),
+                          border: Border(
+                            top: BorderSide(color: Colors.black),
+                            left: BorderSide(color: Colors.black),
+                            right: BorderSide(color: Colors.black),
+                            bottom: BorderSide(color: Colors.black),
+                          )),
+                      child: MaterialButton(
+                        minWidth: double.infinity,
+                        height: 60.0,
+                        onPressed: () async {
+                          try {
+                            if (_formKey.currentState.validate()) {
+                              _checkInputs();
+                              await productBloc.atualizarProduto(
+                                  produto.id, produto.categoria);
+                              push(context, ListaProdutos(), replace: true);
+                            }
+                          } catch (e) {
+                            _onFail();
+                          }
+                        },
+                        color: Colors.yellow,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: Icon(
+                          Icons.cloud_upload,
+                          size: 40.0,
+                        ),
+                      ),
+                    ))
               ],
             ),
           ),
@@ -369,5 +401,21 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
         _estoqueDoNotChanged) {
       productBloc.estoqueController.updateValue(produto.estoque + 0.0);
     }
+  }
+
+  void _onFail() {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text(
+        "Falha ao atualizar o produto, tente novamente",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 20.0,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      backgroundColor: Colors.redAccent,
+      duration: Duration(seconds: 2),
+    ));
   }
 }

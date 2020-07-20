@@ -23,12 +23,16 @@ class _HomeScreenState extends State<HomeScreen> {
             ListTile(
               title: Text("Seus produtos cadastrados"),
               trailing: Icon(Icons.arrow_right),
-              onTap: (){push(context, ListaProdutos());},
+              onTap: () {
+                push(context, ListaProdutos());
+              },
             ),
             ListTile(
               title: Text("Logout"),
               trailing: Icon(Icons.arrow_right),
-              onTap: (){push(context, ListaProdutos());},
+              onTap: () {
+                push(context, ListaProdutos());
+              },
             ),
           ],
         ),
@@ -39,12 +43,6 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: LayoutColor.secondaryColor,
       ),
       body: Container(),
-      floatingActionButton: FloatingActionButton(
-          backgroundColor: LayoutColor.primaryColor,
-          child: Icon(Icons.add, color: Colors.white),
-          onPressed: () {
-            push(context, ProdutoCadastro());
-          }),
     );
   }
 }

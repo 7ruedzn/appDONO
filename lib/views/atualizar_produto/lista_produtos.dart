@@ -4,6 +4,7 @@ import 'package:obaratao/blocs/bloc_produto.dart';
 import 'package:obaratao/models/produtoDados.dart';
 import 'package:obaratao/screens/home_screen.dart';
 import 'package:obaratao/utils/nav.dart';
+import 'package:obaratao/views/cadastro_produtos/produto_cadastro.dart';
 import 'package:obaratao/widgets/layout_color.dart';
 
 import 'atualizar_produto.dart';
@@ -33,7 +34,11 @@ class _ListaProdutosState extends State<ListaProdutos> {
         title: Text('Lista de Produtos'),
         backgroundColor: LayoutColor.secondaryColor,
         centerTitle: true,
-        leading: IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: () {push(context, HomeScreen(), replace: true);}),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              push(context, HomeScreen(), replace: true);
+            }),
       ),
       body: StreamBuilder(
           stream: _onRefresh ? null : blocProduto.outProducts,
@@ -58,40 +63,52 @@ class _ListaProdutosState extends State<ListaProdutos> {
                     return Container(
                       padding: EdgeInsets.all(4.0),
                       child: ListTile(
-                        onTap: () => push(context, AtualizarProduto(productList[index], blocProduto)),
+                        onTap: () => push(context,
+                            AtualizarProduto(productList[index], blocProduto)),
                         contentPadding: EdgeInsets.all(4.0),
                         leading: Container(
-                          decoration: BoxDecoration(
-                          ),
+                          decoration: BoxDecoration(),
                           child: Image.network(
                             productList[index].foto,
                             fit: BoxFit.scaleDown,
                           ),
                         ),
                         title: Text(productList[index].nome),
-                        subtitle: Text('R\$ ' + productList[index].preco.toString().replaceAll(".", ",")),
+                        subtitle: Text('R\$ ' +
+                            productList[index]
+                                .preco
+                                .toStringAsFixed(2)
+                                .replaceAll(".", ",")),
                         trailing: SizedBox(
-                      width: 50.0,
-                      height: 32.0,
-                      child: MaterialButton(
-                        color: Colors.yellow,
-                        padding: EdgeInsets.zero,
-                        minWidth: double.infinity,
-                        onPressed: () => _deleteProduct(productList[index].categoria, productList[index]),
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                            color: Colors.black,
+                          width: 50.0,
+                          height: 32.0,
+                          child: MaterialButton(
+                            color: Colors.yellow,
+                            padding: EdgeInsets.zero,
+                            minWidth: double.infinity,
+                            onPressed: () => _deleteProduct(
+                                productList[index].categoria,
+                                productList[index]),
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                color: Colors.black,
+                              ),
+                              borderRadius: BorderRadius.circular(13),
+                            ),
+                            child: Icon(Icons.delete_forever),
                           ),
-                          borderRadius: BorderRadius.circular(13),
                         ),
-                        child: Icon(Icons.delete_forever),
-                      ),
-                    ),
                       ),
                     );
                   },
                 );
             }
+          }),
+      floatingActionButton: FloatingActionButton(
+          backgroundColor: LayoutColor.primaryColor,
+          child: Icon(Icons.add, color: Colors.white),
+          onPressed: () {
+            push(context, ProdutoCadastro());
           }),
     );
   }
@@ -104,6 +121,5 @@ class _ListaProdutosState extends State<ListaProdutos> {
         .document(p.id);
     await productIdRef.delete();
     push(context, ListaProdutos(), replace: true);
-    
   }
 }
