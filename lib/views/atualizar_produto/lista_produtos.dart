@@ -60,42 +60,46 @@ class _ListaProdutosState extends State<ListaProdutos> {
                 return ListView.builder(
                   itemCount: productList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      padding: EdgeInsets.all(4.0),
-                      child: ListTile(
-                        onTap: () => push(context,
+                    return GestureDetector(
+                      onTap: () => push(context,
                             AtualizarProduto(productList[index], blocProduto)),
-                        contentPadding: EdgeInsets.all(4.0),
-                        leading: Container(
-                          decoration: BoxDecoration(),
-                          child: Image.network(
-                            productList[index].foto,
-                            fit: BoxFit.scaleDown,
-                          ),
-                        ),
-                        title: Text(productList[index].nome),
-                        subtitle: Text('R\$ ' +
-                            productList[index]
-                                .preco
-                                .toStringAsFixed(2)
-                                .replaceAll(".", ",")),
-                        trailing: SizedBox(
-                          width: 50.0,
-                          height: 32.0,
-                          child: MaterialButton(
-                            color: Colors.yellow,
-                            padding: EdgeInsets.zero,
-                            minWidth: double.infinity,
-                            onPressed: () => _deleteProduct(
-                                productList[index].categoria,
-                                productList[index]),
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                color: Colors.black,
-                              ),
-                              borderRadius: BorderRadius.circular(13),
+                      child: Card(
+                        child: ListTile(
+                          leading: Container(
+                            alignment: Alignment.centerLeft,
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
                             ),
-                            child: Icon(Icons.delete_forever),
+                            child: Image.network(
+                              productList[index].foto,
+                              fit: BoxFit.scaleDown,
+                            ),
+                          ),
+                          title: Text(productList[index].nome),
+                          subtitle: Text('R\$ ' +
+                            productList[index]
+                            .preco
+                            .toStringAsFixed(2)
+                            .replaceAll(".", ",")),
+                          trailing: SizedBox(
+                            width: 50.0,
+                            height: 32.0,
+                            child: MaterialButton(
+                              color: Colors.yellow,
+                              padding: EdgeInsets.zero,
+                              minWidth: double.infinity,
+                              onPressed: () => _deleteProduct(
+                                  productList[index].categoria,
+                                  productList[index]),
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                  color: Colors.black,
+                                ),
+                                borderRadius: BorderRadius.circular(13),
+                              ),
+                              child: Icon(Icons.delete_forever),
+                            ),
                           ),
                         ),
                       ),

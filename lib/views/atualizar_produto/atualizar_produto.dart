@@ -48,7 +48,7 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 5.0),
           child: Form(
             key: _formKey,
             child: Column(
@@ -61,27 +61,25 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
                       return Container(
                         height: size.height / 4,
                         width: size.width / 2,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15.0),
+                          border: Border(
+                            top: BorderSide(color: Colors.black),
+                            left: BorderSide(color: Colors.black),
+                            right: BorderSide(color: Colors.black),
+                            bottom: BorderSide(color: Colors.black), 
+                          ),
+                        ),
                         child: snapshot.connectionState ==
                                     ConnectionState.waiting &&
                                 _isLoadingImage == true
                             ? Center(
                                 child: CircularProgressIndicator(),
                               )
-                            : Image.network(
-                                snapshot.data == null || snapshot.data == ""
-                                    ? produto.foto
-                                    : snapshot.data,
-                                fit: BoxFit.fill,
-                              ),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.blueGrey,
-                            border: Border(
-                              top: BorderSide(color: Colors.black),
-                              left: BorderSide(color: Colors.black),
-                              right: BorderSide(color: Colors.black),
-                              bottom: BorderSide(color: Colors.black),
-                            )),
+                            : ClipRRect(
+                              borderRadius: BorderRadius.circular(15.0),
+                              child: Image.network(produto.foto, fit: BoxFit.fill),
+                            ),
                       );
                     }),
                 SizedBox(height: 20.0),
@@ -119,53 +117,59 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
                 ),
                 SizedBox(height: 20.0),
 
-                //FORMS
+                //NOME FORMS
 
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text("Nome:"),
+                    Spacer(),
                     Container(
+                      //color: Colors.black,
                       height: 40,
                       width: 200,
-                      child: CusTextFormField(
-                        labelText: _editName ? "" : "${produto.nome}",
-                        controller: productBloc.nomeController,
-                        validator: (_value) {
-                          _value == null
-                              ? "Coloque o nome do produto"
-                              : productBloc.nomeController.text == produto.nome
-                                  ? "O valor digitado é igual ao atual"
-                                  : null;
-                        },
-                        keyboardType: TextInputType.text,
-                        hintText: "Ex: Pão Francês",
-                        enabled: _editName,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: CusTextFormField(
+                          labelText: _editName ? "" : "${produto.nome}",
+                          controller: productBloc.nomeController,
+                          validator: (_value) {
+                            _value == null
+                                ? "Coloque o nome do produto"
+                                : productBloc.nomeController.text == produto.nome
+                                    ? "O valor digitado é igual ao atual"
+                                    : null;
+                          },
+                          keyboardType: TextInputType.text,
+                          hintText: "Ex: Pão Francês",
+                          enabled: _editName,
+                        ),
                       ),
                     ),
-
-                    //NOME FORM
-
-                    SizedBox(
-                      width: 50.0,
-                      height: 32.0,
-                      child: MaterialButton(
-                        color: Colors.yellow,
-                        padding: EdgeInsets.zero,
-                        minWidth: double.infinity,
-                        onPressed: () {
-                          setState(() {
-                            _editName = !_editName;
-                          });
-                        },
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                            color: Colors.black,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: SizedBox(
+                        width: 50.0,
+                        height: 32.0,
+                        child: MaterialButton(
+                          color: Colors.yellow,
+                          padding: EdgeInsets.zero,
+                          minWidth: double.infinity,
+                          onPressed: () {
+                            setState(() {
+                              _editName = !_editName;
+                            });
+                          },
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: Colors.black,
+                            ),
+                            borderRadius: BorderRadius.circular(13),
                           ),
-                          borderRadius: BorderRadius.circular(13),
-                        ),
-                        child: Icon(
-                          Icons.edit,
+                          child: Icon(
+                            Icons.edit,
+                          ),
                         ),
                       ),
                     ),
@@ -179,6 +183,7 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text("Descrição:"),
+                    Spacer(),
                     Container(
                       height: 40,
                       width: 200,
@@ -199,26 +204,29 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
                         enabled: _editDescription,
                       ),
                     ),
-                    SizedBox(
-                      width: 50.0,
-                      height: 32.0,
-                      child: MaterialButton(
-                        color: Colors.yellow,
-                        padding: EdgeInsets.zero,
-                        minWidth: double.infinity,
-                        onPressed: () {
-                          setState(() {
-                            _editDescription = !_editDescription;
-                          });
-                        },
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                            color: Colors.black,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: SizedBox(
+                        width: 50.0,
+                        height: 32.0,
+                        child: MaterialButton(
+                          color: Colors.yellow,
+                          padding: EdgeInsets.zero,
+                          minWidth: double.infinity,
+                          onPressed: () {
+                            setState(() {
+                              _editDescription = !_editDescription;
+                            });
+                          },
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: Colors.black,
+                            ),
+                            borderRadius: BorderRadius.circular(13),
                           ),
-                          borderRadius: BorderRadius.circular(13),
-                        ),
-                        child: Icon(
-                          Icons.edit,
+                          child: Icon(
+                            Icons.edit,
+                          ),
                         ),
                       ),
                     ),
@@ -232,6 +240,7 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text("Preço:"),
+                    Spacer(),
                     Container(
                       height: 40,
                       width: 200,
@@ -254,26 +263,29 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
                         enabled: _editPrice,
                       ),
                     ),
-                    SizedBox(
-                      width: 50.0,
-                      height: 32.0,
-                      child: MaterialButton(
-                        color: Colors.yellow,
-                        padding: EdgeInsets.zero,
-                        minWidth: double.infinity,
-                        onPressed: () {
-                          setState(() {
-                            _editPrice = !_editPrice;
-                          });
-                        },
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                            color: Colors.black,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: SizedBox(
+                        width: 50.0,
+                        height: 32.0,
+                        child: MaterialButton(
+                          color: Colors.yellow,
+                          padding: EdgeInsets.zero,
+                          minWidth: double.infinity,
+                          onPressed: () {
+                            setState(() {
+                              _editPrice = !_editPrice;
+                            });
+                          },
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: Colors.black,
+                            ),
+                            borderRadius: BorderRadius.circular(13),
                           ),
-                          borderRadius: BorderRadius.circular(13),
-                        ),
-                        child: Icon(
-                          Icons.edit,
+                          child: Icon(
+                            Icons.edit,
+                          ),
                         ),
                       ),
                     ),
@@ -287,6 +299,7 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text("Estoque:"),
+                    Spacer(),
                     Container(
                       height: 40,
                       width: 200,
@@ -307,27 +320,30 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
                         enabled: _editEstoque,
                       ),
                     ),
-                    SizedBox(
-                      width: 50.0,
-                      height: 32.0,
-                      child: MaterialButton(
-                        color: Colors.yellow,
-                        padding: EdgeInsets.zero,
-                        minWidth: double.infinity,
-                        onPressed: () {
-                          setState(() {
-                            _estoqueDoNotChanged = !_estoqueDoNotChanged;
-                            _editEstoque = !_editEstoque;
-                          });
-                        },
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                            color: Colors.black,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: SizedBox(
+                        width: 50.0,
+                        height: 32.0,
+                        child: MaterialButton(
+                          color: Colors.yellow,
+                          padding: EdgeInsets.zero,
+                          minWidth: double.infinity,
+                          onPressed: () {
+                            setState(() {
+                              _estoqueDoNotChanged = !_estoqueDoNotChanged;
+                              _editEstoque = !_editEstoque;
+                            });
+                          },
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: Colors.black,
+                            ),
+                            borderRadius: BorderRadius.circular(13),
                           ),
-                          borderRadius: BorderRadius.circular(13),
-                        ),
-                        child: Icon(
-                          Icons.edit,
+                          child: Icon(
+                            Icons.edit,
+                          ),
                         ),
                       ),
                     ),
