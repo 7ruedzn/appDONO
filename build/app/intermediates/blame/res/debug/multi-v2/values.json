@@ -1,46 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\beatr\\.vscode\\appDONO\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+            "outputFile": "C:\\Users\\Vis\\Desktop\\Projetos\\ObarataoDONO\\obaratao\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\beatr\\.gradle\\caches\\transforms-2\\files-2.1\\6f4e6eb26f6c204062e462fe30c558b2\\play-services-maps-17.0.0\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "165",
-                        "endLines": "62",
-                        "endColumns": "20",
-                        "endOffsets": "1582"
-                    },
-                    "to": {
-                        "startLines": "273",
-                        "startColumns": "4",
-                        "startOffsets": "17737",
-                        "endLines": "331",
-                        "endColumns": "20",
-                        "endOffsets": "19154"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\beatr\\.gradle\\caches\\transforms-2\\files-2.1\\b44d764794008cef1edce5fc874ea08f\\jetified-play-services-basement-17.0.0\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "4,7",
-                        "startColumns": "0,0",
-                        "startOffsets": "238,401",
-                        "endColumns": "63,166",
-                        "endOffsets": "301,567"
-                    },
-                    "to": {
-                        "startLines": "84,94",
-                        "startColumns": "4,4",
-                        "startOffsets": "5259,6437",
-                        "endColumns": "67,166",
-                        "endOffsets": "5322,6599"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\beatr\\.gradle\\caches\\transforms-2\\files-2.1\\3aaf6e5219b7f981ec263df919098c6f\\core-1.1.0\\res\\values\\values.xml",
+                    "source": "C:\\Users\\Vis\\.gradle\\caches\\transforms-2\\files-2.1\\3aaf6e5219b7f981ec263df919098c6f\\core-1.1.0\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,83,84,88,89,90,91,98,141,173,210",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -59,7 +23,41 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\beatr\\.gradle\\caches\\transforms-2\\files-2.1\\6eb14f512292913515d869914807ad40\\play-services-base-17.1.0\\res\\values\\values.xml",
+                    "source": "C:\\Users\\Vis\\Desktop\\Projetos\\ObarataoDONO\\obaratao\\build\\app\\generated\\res\\google-services\\debug\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,199,313,395,499,608,728,831",
+                        "endColumns": "143,113,81,103,108,119,102,79",
+                        "endOffsets": "194,308,390,494,603,723,826,906"
+                    },
+                    "to": {
+                        "startLines": "104,105,106,107,108,109,110,111",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "7730,7874,7988,8070,8174,8283,8403,8506",
+                        "endColumns": "143,113,81,103,108,119,102,79",
+                        "endOffsets": "7869,7983,8065,8169,8278,8398,8501,8581"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Vis\\.gradle\\caches\\transforms-2\\files-2.1\\bd7b284f0feaef95b4d152550408b386\\jetified-play-services-basement-17.0.0\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "4,7",
+                        "startColumns": "0,0",
+                        "startOffsets": "238,401",
+                        "endColumns": "63,166",
+                        "endOffsets": "301,567"
+                    },
+                    "to": {
+                        "startLines": "84,94",
+                        "startColumns": "4,4",
+                        "startOffsets": "5259,6437",
+                        "endColumns": "67,166",
+                        "endOffsets": "5322,6599"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Vis\\.gradle\\caches\\transforms-2\\files-2.1\\4c0b774c09d5393feb013f0dbe753af3\\play-services-base-17.0.0\\res\\values\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,33,46",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -78,24 +76,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\beatr\\.vscode\\appDONO\\build\\app\\generated\\res\\google-services\\debug\\values\\values.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,199,313,395,499,608,728,831",
-                        "endColumns": "143,113,81,103,108,119,102,79",
-                        "endOffsets": "194,308,390,494,603,723,826,906"
-                    },
-                    "to": {
-                        "startLines": "104,105,106,107,108,109,110,111",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "7730,7874,7988,8070,8174,8283,8403,8506",
-                        "endColumns": "143,113,81,103,108,119,102,79",
-                        "endOffsets": "7869,7983,8065,8169,8278,8398,8501,8581"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\beatr\\.vscode\\appDONO\\android\\app\\src\\main\\res\\values\\styles.xml",
+                    "source": "C:\\Users\\Vis\\Desktop\\Projetos\\ObarataoDONO\\obaratao\\android\\app\\src\\main\\res\\values\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
@@ -111,6 +92,25 @@
                         "endLines": "117,120",
                         "endColumns": "12,12",
                         "endOffsets": "8949,9114"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Vis\\.gradle\\caches\\transforms-2\\files-2.1\\6f4e6eb26f6c204062e462fe30c558b2\\play-services-maps-17.0.0\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "165",
+                        "endLines": "62",
+                        "endColumns": "20",
+                        "endOffsets": "1582"
+                    },
+                    "to": {
+                        "startLines": "273",
+                        "startColumns": "4",
+                        "startOffsets": "17737",
+                        "endLines": "331",
+                        "endColumns": "20",
+                        "endOffsets": "19154"
                     }
                 }
             ]

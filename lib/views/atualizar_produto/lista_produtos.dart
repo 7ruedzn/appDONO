@@ -33,7 +33,7 @@ class _ListaProdutosState extends State<ListaProdutos> {
         title: Text('Lista de Produtos'),
         backgroundColor: LayoutColor.secondaryColor,
         centerTitle: true,
-        leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () {push(context, HomeScreen(), replace: true);}),
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: () {push(context, HomeScreen(), replace: true);}),
       ),
       body: StreamBuilder(
           stream: _onRefresh ? null : blocProduto.outProducts,
@@ -61,6 +61,8 @@ class _ListaProdutosState extends State<ListaProdutos> {
                         onTap: () => push(context, AtualizarProduto(productList[index], blocProduto)),
                         contentPadding: EdgeInsets.all(4.0),
                         leading: Container(
+                          decoration: BoxDecoration(
+                          ),
                           child: Image.network(
                             productList[index].foto,
                             fit: BoxFit.scaleDown,
@@ -68,7 +70,23 @@ class _ListaProdutosState extends State<ListaProdutos> {
                         ),
                         title: Text(productList[index].nome),
                         subtitle: Text('R\$ ' + productList[index].preco.toString().replaceAll(".", ",")),
-                        trailing: IconButton(icon: Icon(Icons.delete), onPressed: () => _deleteProduct(productList[index].categoria, productList[index])),
+                        trailing: SizedBox(
+                      width: 50.0,
+                      height: 32.0,
+                      child: MaterialButton(
+                        color: Colors.yellow,
+                        padding: EdgeInsets.zero,
+                        minWidth: double.infinity,
+                        onPressed: () => _deleteProduct(productList[index].categoria, productList[index]),
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            color: Colors.black,
+                          ),
+                          borderRadius: BorderRadius.circular(13),
+                        ),
+                        child: Icon(Icons.delete_forever),
+                      ),
+                    ),
                       ),
                     );
                   },

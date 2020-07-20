@@ -35,8 +35,11 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        elevation: 0,
         title: Text('Atualizar Produto'),
         centerTitle: true,
         backgroundColor: LayoutColor.secondaryColor,
@@ -48,12 +51,15 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
             key: _formKey,
             child: Column(
               children: <Widget>[
+
+                //FOTO
+
                 Container(
-                  height: 200,
-                  width: 200,
+                  height: size.height / 4,
+                  width: size.width / 2,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.blue,
+                      color: Colors.blueGrey,
                       image: _isLoadingImage
                           ? Center(
                               child: CircularProgressIndicator(),
@@ -61,24 +67,48 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
                           : DecorationImage(
                               image: NetworkImage(produto.foto),
                               fit: BoxFit.fill,
-                            )),
+                            ),
+                            border: Border(
+                              top: BorderSide(color: Colors.black),
+                              left: BorderSide(color: Colors.black),
+                              right: BorderSide(color: Colors.black),
+                              bottom: BorderSide(color: Colors.black),
+                            )
+                  ),
                 ),
                 SizedBox(height: 20.0),
+
+                //ICONE DA CÂMERA
+
                 Container(
-                  padding: EdgeInsets.all(5.0),
-                  color: LayoutColor.primaryColor,
-                  child: IconButton(
-                    color: Colors.amber,
-                    icon: Icon(Icons.photo_camera),
+                  //padding: EdgeInsets.all(5.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50.0),
+                    border: Border(
+                      top: BorderSide(color: Colors.black),
+                      left: BorderSide(color: Colors.black),
+                      right: BorderSide(color: Colors.black),
+                      bottom: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  child: MaterialButton(
+                    height: 50.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50.0),
+                    ),
                     //tentar att a pagina quando tirar a foto;
                     onPressed: () async {
                       _isLoadingImage = true;
                       await productBloc.loadImage();
                       _isLoadingImage = false;
                     },
+                    child: Icon(Icons.photo_camera, size: 40.0,),
                   ),
                 ),
                 SizedBox(height: 20.0),
+
+                //FORMS
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -101,21 +131,36 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
                         enabled: _editName,
                       ),
                     ),
-                    Container(
-                      height: 60,
-                      width: 35,
-                      color: Colors.red,
-                      child: IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: () {
+
+                    //NOME FORM
+
+                    SizedBox(
+                      width: 50.0,
+                      height: 32.0,
+                      child: MaterialButton(
+                        color: Colors.yellow,
+                        padding: EdgeInsets.zero,
+                        minWidth: double.infinity,
+                        onPressed: () {
                             setState(() {
                               _editName = !_editName;
                             });
-                          }),
+                          },
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            color: Colors.black,
+                          ),
+                          borderRadius: BorderRadius.circular(13),
+                        ),
+                        child: Icon(Icons.edit,),
+                      ),
                     ),
                   ],
                 ),
                 SizedBox(height: 20.0),
+
+                //DESCRICAO FORM
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -140,21 +185,33 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
                         enabled: _editDescription,
                       ),
                     ),
-                    Container(
-                      height: 60,
-                      width: 35,
-                      color: Colors.red,
-                      child: IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: () {
+                    SizedBox(
+                      width: 50.0,
+                      height: 32.0,
+                      child: MaterialButton(
+                        color: Colors.yellow,
+                        padding: EdgeInsets.zero,
+                        minWidth: double.infinity,
+                        onPressed: () {
                             setState(() {
                               _editDescription = !_editDescription;
                             });
-                          }),
+                          },
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            color: Colors.black,
+                          ),
+                          borderRadius: BorderRadius.circular(13),
+                        ),
+                        child: Icon(Icons.edit,),
+                      ),
                     ),
                   ],
                 ),
                 SizedBox(height: 20.0),
+
+                //PRECO FORM
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -178,21 +235,33 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
                         enabled: _editPrice,
                       ),
                     ),
-                    Container(
-                      height: 60,
-                      width: 35,
-                      color: Colors.red,
-                      child: IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: () {
+                    SizedBox(
+                      width: 50.0,
+                      height: 32.0,
+                      child: MaterialButton(
+                        color: Colors.yellow,
+                        padding: EdgeInsets.zero,
+                        minWidth: double.infinity,
+                        onPressed: () {
                             setState(() {
                               _editPrice = !_editPrice;
                             });
-                          }),
+                          },
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            color: Colors.black,
+                          ),
+                          borderRadius: BorderRadius.circular(13),
+                        ),
+                        child: Icon(Icons.edit,),
+                      ),
                     ),
                   ],
                 ),
                 SizedBox(height: 20.0),
+
+                //ESTOQUE FORM
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -214,26 +283,51 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
                         enabled: _editEstoque,
                       ),
                     ),
-                    Container(
-                      height: 60,
-                      width: 35,
-                      color: Colors.red,
-                      child: IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: () {
+                    SizedBox(
+                      width: 50.0,
+                      height: 32.0,
+                      child: MaterialButton(
+                        color: Colors.yellow,
+                        padding: EdgeInsets.zero,
+                        minWidth: double.infinity,
+                        onPressed: () {
                             setState(() {
                               _estoqueDoNotChanged = !_estoqueDoNotChanged;
                               _editEstoque = !_editEstoque;
                             });
-                          }),
+                          },
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            color: Colors.black,
+                          ),
+                          borderRadius: BorderRadius.circular(13),
+                        ),
+                        child: Icon(Icons.edit,),
+                      ),
                     ),
                   ],
                 ),
                 SizedBox(height: 20.0),
-                FlatButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)),
-                  onPressed: () async {
+                
+                //ATUALIZAR PRODUTO BUTTON
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 30.0),
+                  child: Container(
+                    padding: EdgeInsets.only(top: 3.0, left: 3.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50.0),
+                      border: Border(
+                        top: BorderSide(color: Colors.black),
+                        left: BorderSide(color: Colors.black),
+                        right: BorderSide(color: Colors.black),
+                        bottom: BorderSide(color: Colors.black),
+                      )
+                    ),
+                    child: MaterialButton(
+                    minWidth: double.infinity,
+                    height: 60.0,
+                    onPressed: () async {
                     if (_formKey.currentState.validate()) {
                       _checkInputs();
                       await productBloc.atualizarProduto(
@@ -241,15 +335,15 @@ class _AtualizarProdutoState extends State<AtualizarProduto> {
                           push(context, ListaProdutos(), replace: true);
                     }
                   },
-                  color: LayoutColor.primaryColor,
-                  child: Text(
-                    "Atualizar Produto",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25.0,
+                    color: Colors.yellow,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
                     ),
+                    child: Icon(Icons.cloud_upload, size: 40.0,),
                   ),
-                ),
+                  )
+                )
               ],
             ),
           ),

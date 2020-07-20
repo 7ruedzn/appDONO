@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Container(),
       floatingActionButton: FloatingActionButton(
           backgroundColor: LayoutColor.primaryColor,
-          child: Icon(Icons.add),
+          child: Icon(Icons.add, color: Colors.white),
           onPressed: () {
             push(context, ProdutoCadastro());
           }),
