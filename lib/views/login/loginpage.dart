@@ -6,13 +6,12 @@ import 'package:obaratao/utils/nav.dart';
 import 'package:obaratao/widgets/cus_text_form_field.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class LoginPage2 extends StatefulWidget {
-  static String tag = 'loginpage2';
+class LoginPage extends StatefulWidget {
   @override
-  _LoginPage2State createState() => _LoginPage2State();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPage2State extends State<LoginPage2> {
+class _LoginPageState extends State<LoginPage> {
   var _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -34,12 +33,6 @@ class _LoginPage2State extends State<LoginPage2> {
         elevation: 0,
         brightness: Brightness.light,
         backgroundColor: Colors.white,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back_ios, size: 20.0, color: Colors.black),
-        ),
       ),
       body: ScopedModelDescendant<UserModel>(builder: (context, child, model) {
         return SingleChildScrollView(

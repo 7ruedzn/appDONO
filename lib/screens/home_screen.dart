@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:obaratao/models/user_model.dart';
 import 'package:obaratao/utils/nav.dart';
 import 'package:obaratao/views/atualizar_produto/atualizar_produto.dart';
 import 'package:obaratao/views/atualizar_produto/lista_produtos.dart';
 import 'package:obaratao/views/cadastro_produtos/produto_cadastro.dart';
+import 'package:obaratao/views/lista_pedidos/lista_pedidos.dart';
+import 'package:obaratao/views/login/loginpage.dart';
 import 'package:obaratao/widgets/layout_color.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -83,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         backgroundColor: LayoutColor.secondaryColor,
       ),
-      body: Container(),
+      body: ListPedidos(),
     );
   }
 }

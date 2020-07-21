@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:obaratao/views/lista_pedidos/pedidos_widget.dart';
+import 'package:obaratao/views/lista_pedidos/lista_pedidos.dart';
 import 'layout_color.dart';
 
 class LayoutTeste {
@@ -9,7 +9,7 @@ class LayoutTeste {
   static int currentIndex = 0; //Muda de acordo com a 'aba' selecionada;
   static final abas = [
     //Cada indice é carrega uma page: 0 - home; 1 - Ofertas; 2 - compras.
-    PedidosWidget.tag,
+    //PedidosWidget.tag,
     //Produtos.tag,
   ];
 
