@@ -11,6 +11,7 @@ class ProdutoCadastro extends StatefulWidget {
 }
 
 class _ProdutoCadastroState extends State<ProdutoCadastro> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   var productBloc = BlocProduto();
   bool _isLoading = false; //bool para acionar o circular progresss indicator
@@ -24,11 +25,13 @@ class _ProdutoCadastroState extends State<ProdutoCadastro> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text("Cadastre seu produto"),
         centerTitle: true,
-        backgroundColor:LayoutColor.secondaryColor,
+        backgroundColor: LayoutColor.secondaryColor,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -44,22 +47,51 @@ class _ProdutoCadastroState extends State<ProdutoCadastro> {
                 SizedBox(
                   height: 15,
                 ),
+                StreamBuilder(
+                    stream: productBloc.outFoto,
+                    builder: (context, AsyncSnapshot<String> snapshot) {
+                      return Container(
+                        height: size.height / 4,
+                        width: size.width / 2,
+                        child: snapshot.connectionState ==
+                                    ConnectionState.waiting &&
+                                _isLoadingImage == true
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : snapshot.data != null
+                                ? Image.network(
+                                    snapshot.data,
+                                    fit: BoxFit.fill,
+                                  )
+                                : Container(),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.blueGrey,
+                            border: Border(
+                              top: BorderSide(color: Colors.black),
+                              left: BorderSide(color: Colors.black),
+                              right: BorderSide(color: Colors.black),
+                              bottom: BorderSide(color: Colors.black),
+                            )),
+                      );
+                    }),
+                SizedBox(
+                  height: 10,
+                ),
                 Container(
                   padding: EdgeInsets.all(2.0),
                   color: LayoutColor.primaryColor,
-                  child: _isLoadingImage
-                      ? Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : IconButton(
-                          color: Colors.white,
-                          icon: Icon(Icons.photo_camera),
-                          onPressed: () async {
-                            _isLoadingImage = true;
-                            await productBloc.loadImage();
-                            _isLoadingImage = false;
-                          },
-                        ),
+                  child: IconButton(
+                    color: Colors.white,
+                    icon: Icon(Icons.photo_camera),
+                    onPressed: () async {
+                      setState(() {
+                        _isLoadingImage = true;
+                      });
+                      await productBloc.loadImage();
+                    },
+                  ),
                 ),
                 SizedBox(
                   height: 15,
@@ -94,7 +126,7 @@ class _ProdutoCadastroState extends State<ProdutoCadastro> {
                   labelText: "Preço do Produto",
                   controller: productBloc.precoController,
                   validator: (_value) {
-                    productBloc.precoController.numberValue > 0
+                    productBloc.precoController.numberValue + 0.0 > 0
                         ? "Coloque o preço do produto"
                         : null;
                   },
@@ -169,16 +201,21 @@ class _ProdutoCadastroState extends State<ProdutoCadastro> {
                       )
                     : FlatButton(
                         onPressed: () async {
-                          if (_formKey.currentState.validate() &&
-                              productBloc.fotoController.text != "") {
-                            _isLoading = true;
-                            await productBloc.cadastrarProduto();
-                            _isLoading = false;
-                            BarataoUtils.showMessage(
-                                "Produto cadastrado com sucesso!", context);
-                          } else {
-                            BarataoUtils.showMessage(
-                                "Adicione a foto do produto", context);
+                          try {
+                            if (_formKey.currentState.validate() &&
+                                productBloc.fotoController.text != "") {
+                              _isLoading = true;
+                              await productBloc.cadastrarProduto();
+                              _isLoading = false;
+                              productBloc.fotoController = null;
+                              BarataoUtils.showMessage(
+                                  "Produto cadastrado com sucesso!", context);
+                            } else {
+                              BarataoUtils.showMessage(
+                                  "Adicione a foto do produto", context);
+                            }
+                          } catch (e) {
+                            _onFail();
                           }
                         },
                         color: LayoutColor.primaryColor,
@@ -192,5 +229,21 @@ class _ProdutoCadastroState extends State<ProdutoCadastro> {
         ),
       ),
     );
+  }
+
+  void _onFail() {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text(
+        "Falha ao cadastrar o produto, tente novamente",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 20.0,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      backgroundColor: Colors.redAccent,
+      duration: Duration(seconds: 2),
+    ));
   }
 }

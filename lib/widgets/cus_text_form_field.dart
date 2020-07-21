@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-
 import 'layout_color.dart';
+import 'package:flutter/material.dart';
 
 class CusTextFormField extends StatelessWidget {
   final bool obscureText;
@@ -34,34 +33,42 @@ class CusTextFormField extends StatelessWidget {
     return TextFormField(
       keyboardType: keyboardType,
       obscureText: obscureText,
-      initialValue: initialValue,
       onChanged: onChanged,
       controller: controller,
       validator: validator,
       textInputAction: textInputAction,
       focusNode: focusNode,
       enabled: enabled,
+      initialValue: initialValue,
       onFieldSubmitted: (String text) {
         if (nextFocus != null) {
           FocusScope.of(context).requestFocus(nextFocus);
         }
       },
       style: TextStyle(
-        fontSize: 25,
-        color: LayoutColor.primaryColor[500],
+        fontSize: 15,
+        color: Colors.black87,
+        fontWeight: FontWeight.w400,
       ),
       decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
+        contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey[400]),
+        ),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey[400]),
+        ),
           labelText: labelText,
           labelStyle: TextStyle(
-            fontSize: 25,
-            color: LayoutColor.primaryColor,
+            fontSize: 15,
+            color: Colors.black87,
+            fontWeight: FontWeight.w400,
           ),
           hintText: hintText,
           hintStyle: TextStyle(
-            fontSize: 16,
+            fontSize: 15,
+            color: Colors.black87,
+            fontWeight: FontWeight.w400,
           )),
     );
   }

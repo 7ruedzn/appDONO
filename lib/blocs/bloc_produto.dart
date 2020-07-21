@@ -18,14 +18,18 @@ class BlocProduto extends BlocBase {
 
   final StreamController<List<ProdutoDados>> _productsController$ =
       StreamController<List<ProdutoDados>>();
+  final StreamController<String> _urlFotoController$ =
+      StreamController<String>();
 
   Stream<List<ProdutoDados>> get outProducts => _productsController$.stream;
+  Stream<String> get outFoto => _urlFotoController$.stream;
 
   var nomeController = TextEditingController();
   var descricaoController = TextEditingController();
   var fotoController = TextEditingController();
   var categoriaController = TextEditingController();
-  var precoController = new MoneyMaskedTextController(leftSymbol: 'R\$ ', precision: 2);
+  var precoController =
+      new MoneyMaskedTextController(leftSymbol: 'R\$ ', precision: 2);
   var estoqueController =
       new MoneyMaskedTextController(precision: 0, decimalSeparator: "");
 
@@ -43,8 +47,8 @@ class BlocProduto extends BlocBase {
   Future<void> cadastrarProduto() async {
     data['nome'] = nomeController.text;
     data['descricao'] = descricaoController.text;
-    data['preco'] = precoController.numberValue;
-    data['estoque'] = estoqueController.numberValue;
+    data['preco'] = precoController.numberValue + 0.0;
+    data['estoque'] = estoqueController.numberValue + 0.0;
     data['foto'] = fotoController.text;
     String _categoria = categoriaController.text;
     _sendToFirestore(
@@ -62,21 +66,22 @@ class BlocProduto extends BlocBase {
     Map<String, dynamic> _data = {};
     _data['nome'] = nomeController.text;
     _data['descricao'] = descricaoController.text;
-    _data['preco'] = precoController.numberValue;
-    _data['estoque'] = estoqueController.numberValue;
+    _data['preco'] = precoController.numberValue + 0.0;
+    _data['estoque'] = estoqueController.numberValue + 0.0;
     _data['foto'] = fotoController.text;
     await _updateToFirestore(id, _data, categoria);
 
     //String _categoria = categoriaController.text;
   }
 
-  Future<void> _updateToFirestore(String id, Map<String, dynamic> data, String categoria) async {
-    await Firestore.instance.
-    collection("produtos").
-    document(categoria).
-    collection("produtos").
-    document(id).
-    setData(data, merge: true);
+  Future<void> _updateToFirestore(
+      String id, Map<String, dynamic> data, String categoria) async {
+    await Firestore.instance
+        .collection("produtos")
+        .document(categoria)
+        .collection("produtos")
+        .document(id)
+        .setData(data, merge: true);
     _dispose();
   }
 
@@ -107,6 +112,7 @@ class BlocProduto extends BlocBase {
 
     StorageTaskSnapshot taskSnapshot = await task.onComplete;
     urlImage = await await taskSnapshot.ref.getDownloadURL();
+    _urlFotoController$.add(urlImage);
     fotoController.text = urlImage;
   }
 
@@ -133,6 +139,7 @@ class BlocProduto extends BlocBase {
   @override
   void dispose() {
     _productsController$.close();
+    _urlFotoController$.close();
     super.dispose();
   }
 }
