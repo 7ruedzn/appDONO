@@ -163,9 +163,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {
-                            push(context, HomeScreen());
-                          },
+                          onTap: () {},
                           child:
                               FadeAnimation(1.7, Text('Esqueceu sua senha?')),
                         ),

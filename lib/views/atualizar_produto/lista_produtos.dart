@@ -15,7 +15,8 @@ class ListaProdutos extends StatefulWidget {
 }
 
 class _ListaProdutosState extends State<ListaProdutos> {
-  BlocProduto blocProduto;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  BlocProduto blocProduto = BlocProduto();
   ProdutoDados produto = ProdutoDados();
   List<ProdutoDados> productList = [];
   bool _onRefresh = false;
@@ -23,13 +24,20 @@ class _ListaProdutosState extends State<ListaProdutos> {
   @override
   void initState() {
     super.initState();
-    blocProduto = BlocProduto();
     blocProduto.getAllProducts();
+    print(">> init bloc.getAllProducts");
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    print(">> dispose bloc.getAllProducts");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Lista de Produtos'),
         backgroundColor: LayoutColor.secondaryColor,
@@ -53,59 +61,96 @@ class _ListaProdutosState extends State<ListaProdutos> {
                 );
               case ConnectionState.waiting:
                 return Center(
-                  child: CircularProgressIndicator(),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Clique no + para adicionar produtos!",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        CircularProgressIndicator(),
+                      ]),
                 );
               default:
                 productList = snapshot.data;
-                return ListView.builder(
-                  itemCount: productList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      onTap: () => push(context,
-                            AtualizarProduto(productList[index], blocProduto)),
-                      child: Card(
-                        child: ListTile(
-                          leading: Container(
-                            alignment: Alignment.centerLeft,
-                            height: 50,
-                            width: 50,
-                            decoration: BoxDecoration(
-                            ),
-                            child: Image.network(
-                              productList[index].foto,
-                              fit: BoxFit.scaleDown,
-                            ),
-                          ),
-                          title: Text(productList[index].nome),
-                          subtitle: Text('R\$ ' +
-                            productList[index]
-                            .preco
-                            .toStringAsFixed(2)
-                            .replaceAll(".", ",")),
-                          trailing: SizedBox(
-                            width: 50.0,
-                            height: 32.0,
-                            child: MaterialButton(
-                              color: Colors.yellow,
-                              padding: EdgeInsets.zero,
-                              minWidth: double.infinity,
-                              onPressed: () => _deleteProduct(
-                                  productList[index].categoria,
-                                  productList[index]),
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(
-                                  color: Colors.black,
-                                ),
-                                borderRadius: BorderRadius.circular(13),
+                if (productList.length != 0 ||
+                    productList != [] ||
+                    productList != null) {
+                  return ListView.builder(
+                    itemCount: productList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          push(
+                              context,
+                              AtualizarProduto(
+                                  productList[index], blocProduto));
+                        },
+                        child: Card(
+                          color: productList[index].estoque < 15
+                              ? Colors.red
+                              : Colors.white,
+                          child: ListTile(
+                            leading: Container(
+                              alignment: Alignment.centerLeft,
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(),
+                              child: Image.network(
+                                productList[index].foto,
+                                fit: BoxFit.scaleDown,
                               ),
-                              child: Icon(Icons.delete_forever),
+                            ),
+                            title: Text(productList[index].nome),
+                            subtitle: Text(
+                              'R\$ ' +
+                                  productList[index]
+                                      .preco
+                                      .toStringAsFixed(2)
+                                      .replaceAll(".", ",") +
+                                  ' - Estoque: ' +
+                                  productList[index].estoque.toStringAsFixed(0),
+                              maxLines: 2,
+                              overflow: TextOverflow.clip,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            trailing: SizedBox(
+                              width: 50.0,
+                              height: 32.0,
+                              child: MaterialButton(
+                                color: Colors.yellow,
+                                padding: EdgeInsets.zero,
+                                minWidth: double.infinity,
+                                onPressed: () => blocProduto
+                                    .deleteProduct(productList[index].categoria,
+                                        productList[index])
+                                    .whenComplete(() {
+                                  blocProduto.getAllProducts();
+                                  _showSnackBar("Produto excluído com sucesso!",
+                                      LayoutColor.secondaryColor);
+                                }),
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                    color: Colors.black,
+                                  ),
+                                  borderRadius: BorderRadius.circular(13),
+                                ),
+                                child: Icon(Icons.delete_forever),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                );
+                      );
+                    },
+                  );
+                } else {
+                  return Center(
+                    child: Text("Nenhum produto cadastrado ainda!"),
+                  );
+                }
             }
           }),
       floatingActionButton: FloatingActionButton(
@@ -113,17 +158,24 @@ class _ListaProdutosState extends State<ListaProdutos> {
           child: Icon(Icons.add, color: Colors.white),
           onPressed: () {
             push(context, ProdutoCadastro());
+            dispose();
           }),
     );
   }
 
-  Future<void> _deleteProduct(String categoria, ProdutoDados p) async {
-    DocumentReference productIdRef = Firestore.instance
-        .collection("produtos")
-        .document(categoria)
-        .collection("produtos")
-        .document(p.id);
-    await productIdRef.delete();
-    push(context, ListaProdutos(), replace: true);
+  void _showSnackBar(String msg, Color cor) {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text(
+        msg,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 20.0,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      backgroundColor: cor,
+      duration: Duration(seconds: 2),
+    ));
   }
 }

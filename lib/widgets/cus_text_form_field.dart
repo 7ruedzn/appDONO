@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import 'layout_color.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +16,7 @@ class CusTextFormField extends StatelessWidget {
   final FocusNode nextFocus;
   final String initialValue;
   final bool enabled;
+  final List<TextInputFormatter> textInputFormatter;
   CusTextFormField({
     @required this.labelText,
     this.obscureText = false,
@@ -27,6 +30,7 @@ class CusTextFormField extends StatelessWidget {
     this.textInputAction,
     this.initialValue,
     this.enabled,
+    this.textInputFormatter,
   });
   @override
   Widget build(BuildContext context) {
@@ -40,6 +44,7 @@ class CusTextFormField extends StatelessWidget {
       focusNode: focusNode,
       enabled: enabled,
       initialValue: initialValue,
+      inputFormatters: textInputFormatter,
       onFieldSubmitted: (String text) {
         if (nextFocus != null) {
           FocusScope.of(context).requestFocus(nextFocus);
@@ -51,13 +56,13 @@ class CusTextFormField extends StatelessWidget {
         fontWeight: FontWeight.w400,
       ),
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey[400]),
-        ),
-        border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey[400]),
-        ),
+          contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey[400]),
+          ),
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey[400]),
+          ),
           labelText: labelText,
           labelStyle: TextStyle(
             fontSize: 15,

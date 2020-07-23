@@ -17,7 +17,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       drawer: Drawer(
         child: ListView(
@@ -26,14 +25,15 @@ class _HomeScreenState extends State<HomeScreen> {
               height: MediaQuery.of(context).size.height / 2.5,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(
-                      'assets/images/initialpage.png'),
+                  image: AssetImage('assets/images/initialpage.png'),
                   fit: BoxFit.cover,
                 ),
               ),
             ),
             Text(
-              'Bem vindo!', textAlign: TextAlign.center,style: TextStyle(
+              'Bem vindo!',
+              textAlign: TextAlign.center,
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 30.0,
               ),
@@ -68,7 +68,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.yellow,
                   padding: EdgeInsets.zero,
                   minWidth: double.infinity,
-                  onPressed: () => push(context, ListaProdutos()),
+                  onPressed: () async {
+                    await UserModel.of(context).signOut();
+                    push(context, LoginPage(), replace: true);
+                  },
                   shape: RoundedRectangleBorder(
                     side: BorderSide(
                       color: Colors.black,
